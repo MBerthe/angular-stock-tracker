@@ -1,3 +1,3 @@
-# angular-ivy-gcwkmp
+# angular stock tracker
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ivy-gcwkmp)
+[StackBlitz Link ⚡️](https://stackblitz.com/edit/angular-ivy-gcwkmp)
