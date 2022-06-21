@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import { forkJoin, map, Observable, of } from 'rxjs';
+import { Stock } from '../models/stock';
 import { StockTrackerService } from '../services/stock-tracker.service';
 
 @Component({
@@ -7,14 +10,50 @@ import { StockTrackerService } from '../services/stock-tracker.service';
   styleUrls: ['./stocks.component.scss'],
 })
 export class StocksComponent implements OnInit {
-  constructor(private readonly stockTrackerService: StockTrackerService) {}
+  public symbolControl = new FormControl('');
+  public stocks$: Observable<Stock[]>;
 
-  ngOnInit() {}
+  constructor(private stockTrackerService: StockTrackerService) {
+    this.symbolControl.addAsyncValidators(this.validateStockSymbol);
+  }
+
+  ngOnInit() {
+    this.stocks$ = this.stockTrackerService.stock$;
+    this.stockTrackerService.loadAllStocks();
+  }
 
   public trackStock(): void {
-    console.log('click');
-    /*   this.stockTrackerService
-      .getQuoteBySymbol('')
-      .subscribe((res) => console.log(res));*/
+    const symbol = this.symbolControl.value;
+    const obsQuote$ = this.stockTrackerService.getQuoteBySymbol(symbol);
+    const obsSymbolInfo$ = this.stockTrackerService.getSymbolInfo(symbol);
+    forkJoin([obsQuote$, obsSymbolInfo$]).subscribe(([quote, symbolInfo]) => {
+      const stock: Stock = {
+        stockName: symbolInfo?.length && symbolInfo[0]?.description,
+        symbol: symbolInfo?.length && symbolInfo[0]?.symbol,
+        currentPrice: quote?.c,
+        percentChange: quote?.dp,
+        highPriceOfTheDay: quote?.h,
+        openPriceOfTheDay: quote?.o,
+      };
+    });
   }
+
+  private validateStockSymbol = (
+    control: AbstractControl
+  ): Observable<ValidationErrors | null> => {
+    if (control.value?.length >= 1) {
+      const symbol = control.value.toUpperCase();
+      return this.stockTrackerService
+        .getSymbolInfo(symbol)
+        .pipe(
+          map((res) =>
+            res?.find((stock) => stock.symbol.startsWith(symbol))
+              ? null
+              : { error: 'No matching symbol found' }
+          )
+        );
+    } else {
+      return of({ error: 'No symbol entered' });
+    }
+  };
 }
