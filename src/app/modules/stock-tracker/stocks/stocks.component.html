@@ -1,2 +1,13 @@
-<p>List</p>
-<button routerLink="/sentiment">detail</button>
+<div class="card">
+  <div class="wrapper">
+    <div class="title">
+      Enter the symbol of stock to track (i.e. AAPL, TSLA, GOOGL )
+    </div>
+    <div class="mt-10 ml-15">
+      <input type="text" class="form-control" />
+      <button type="button" class="track-btn" (click)="trackStock()">
+        Track stock
+      </button>
+    </div>
+  </div>
+</div>
