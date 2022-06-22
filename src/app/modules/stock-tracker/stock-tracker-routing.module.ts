@@ -12,7 +12,7 @@ const routes: Routes = [
         component: StocksComponent,
       },
       {
-        path: 'sentiment',
+        path: 'sentiment/:id',
         component: StockDetailComponent,
       },
     ],

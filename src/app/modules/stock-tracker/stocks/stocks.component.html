@@ -1,10 +1,16 @@
 <!-- FORM INPUT -->
-<app-add-stock
-  [symbolControl]="symbolControl"
-  (onSymbolData$)="trackStock()"
-></app-add-stock>
+<div class="mb-10">
+  <app-add-stock
+    [symbolControl]="symbolControl"
+    (onSymbolData$)="trackStock($event)"
+  ></app-add-stock>
+</div>
 
 <!-- LIST OF QUOTE DATA FOR STOCKS-->
-<app-stock-quote *ngFor="let stock of stocks$ | async" [stockQuote]="stock">
-  <div>{{ stock?.symbol }}</div>
+<app-stock-quote
+  *ngFor="let stock of stocks$ | async; trackBy: trackByFn"
+  [stockQuote]="stock"
+  (removeStock$)="removeStock($event)"
+  (gotoSentiment$)="gotoSentiment($event)"
+>
 </app-stock-quote>
