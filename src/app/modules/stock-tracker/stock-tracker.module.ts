@@ -4,6 +4,8 @@ import { StocksComponent } from './stocks/stocks.component';
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { StockTrackerRoutingModule } from './stock-tracker-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddStockComponent } from './components/add-stock/add-stock.component';
+import { StockQuoteComponent } from './components/stock-quote/stock-quote.component';
 
 @NgModule({
   imports: [
@@ -12,6 +14,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     StockTrackerRoutingModule,
   ],
-  declarations: [StocksComponent, StockDetailComponent],
+  declarations: [
+    StocksComponent,
+    StockDetailComponent,
+    AddStockComponent,
+    StockQuoteComponent,
+  ],
 })
 export class StockTrackerModule {}

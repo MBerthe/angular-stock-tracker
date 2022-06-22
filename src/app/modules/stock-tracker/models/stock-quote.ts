@@ -1,4 +1,4 @@
-export interface Stock {
+export interface StockQuote {
   stockName: string;
   symbol: string;
   currentPrice: number;

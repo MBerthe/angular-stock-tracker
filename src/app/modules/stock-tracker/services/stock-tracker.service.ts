@@ -4,7 +4,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { Quote } from '../models/quote';
 import { SearchResponse } from '../models/search-response';
-import { Stock } from '../models/stock';
+import { StockQuote } from '../models/stock-quote';
 import { SymbolInfo } from '../models/symbol-info';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class StockTrackerService {
   private apiUrl = 'https://finnhub.io/api/v1';
   private TOKEN = 'bu4f8kn48v6uehqi3cqg';
 
-  private _stock$ = new BehaviorSubject<Stock[]>(null);
+  private _stock$ = new BehaviorSubject<StockQuote[]>(null);
   public stock$ = this._stock$.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -33,15 +33,13 @@ export class StockTrackerService {
       .pipe(map((response) => response?.result));
   }
 
-  public addStok(item: Stock): void {
+  public addStok(item: StockQuote): void {
     const data = this.getStocks();
-    if (data?.length) {
-      data.push(item);
-      this.setStocks(data);
-    }
+    data.push(item);
+    this.setStocks(data);
   }
 
-  public removeStok(item: Stock): void {
+  public removeStok(item: StockQuote): void {
     let data = this.getStocks();
     data = data?.filter((itemStock) => itemStock?.symbol != item?.symbol);
     this.setStocks(data);
@@ -52,11 +50,16 @@ export class StockTrackerService {
     this._stock$.next(data);
   }
 
-  private getStocks(): Stock[] {
-    return JSON.parse(localStorage.getItem('stocks')) as Stock[];
+  private getStocks(): StockQuote[] {
+    const data =
+      (JSON.parse(localStorage.getItem('stocks')) as StockQuote[]) || [];
+    if (!data?.length) {
+      this.setStocks([]);
+    }
+    return data;
   }
 
-  private setStocks(data: Stock[]): void {
+  private setStocks(data: StockQuote[]): void {
     const jsonData = JSON.stringify(data);
     localStorage.setItem('stocks', jsonData);
     this._stock$.next(data);

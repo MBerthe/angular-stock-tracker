@@ -1,29 +1,10 @@
 <!-- FORM INPUT -->
-<div class="card">
-  <div class="wrapper">
-    <div class="title">
-      Enter the symbol of stock to track (i.e. AAPL, TSLA, GOOGL )
-    </div>
-    <div class="mt-10 ml-15">
-      <input type="text" class="form-control" [formControl]="symbolControl" />
-      <button
-        type="button"
-        class="track-btn"
-        (click)="trackStock()"
-        [disabled]="symbolControl.errors?.error"
-      >
-        Track stock
-      </button>
-      <div
-        *ngIf="symbolControl?.touched && symbolControl.errors?.error"
-        class="error"
-      >
-        No matching symbol found
-      </div>
-    </div>
-  </div>
-</div>
+<app-add-stock
+  [symbolControl]="symbolControl"
+  (onSymbolData$)="trackStock()"
+></app-add-stock>
+
 <!-- LIST OF QUOTE DATA FOR STOCKS-->
-<div *ngFor="let stock of stocks$ | async">
+<app-stock-quote *ngFor="let stock of stocks$ | async" [stockQuote]="stock">
   <div>{{ stock?.symbol }}</div>
-</div>
+</app-stock-quote>
