@@ -51,7 +51,6 @@ export class StocksComponent implements OnInit, OnDestroy {
   }
 
   public gotoSentiment(symbol: string): void {
-    console.log(symbol);
     this.router.navigate(['/sentiment', symbol]);
   }
 

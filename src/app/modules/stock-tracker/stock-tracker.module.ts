@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StocksComponent } from './stocks/stocks.component';
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { StockTrackerRoutingModule } from './stock-tracker-routing.module';
@@ -20,5 +20,6 @@ import { StockQuoteComponent } from './components/stock-quote/stock-quote.compon
     AddStockComponent,
     StockQuoteComponent,
   ],
+  providers: [DatePipe],
 })
 export class StockTrackerModule {}

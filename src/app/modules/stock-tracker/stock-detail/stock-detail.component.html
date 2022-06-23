@@ -1,2 +1,18 @@
-<p>stock-detail works!</p>
-<button routerLink="">back</button>
+<div class="card">
+  <div class="header">
+    <div class="title">{{ stockName }} ({{ symbol }})</div>
+  </div>
+  <div class="wrapper">
+    <ng-container *ngFor="let sentiment of sentiments">
+      <div class="d-flex">
+        <div class="mb-10">{{ getDate(sentiment) | date: 'MMMM' }}</div>
+        <div class="mb-10">Change : {{ sentiment?.change }}</div>
+        <div>MSPR: {{ sentiment?.mspr }}</div>
+      </div>
+      <div *ngIf="sentiment?.change > 0" class="arrow-up">&#8593;</div>
+      <div *ngIf="sentiment?.change < 0" class="arrow-down">&#8595;</div>
+    </ng-container>
+  </div>
+</div>
+
+<button routerLink="">Back to list of stocks</button>

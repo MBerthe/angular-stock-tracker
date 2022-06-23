@@ -4,6 +4,8 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { Quote } from '../models/quote';
 import { SearchResponse } from '../models/search-response';
+import { Sentiment } from '../models/sentiment';
+import { SentimentResponse } from '../models/sentiment-response';
 import { StockQuote } from '../models/stock-quote';
 import { SymbolInfo } from '../models/symbol-info';
 
@@ -32,6 +34,17 @@ export class StockTrackerService {
       )
       .pipe(map((response) => response?.result));
   }
+  public getSentimentInfo(
+    symbol: string,
+    fromDate: string,
+    toDate: string
+  ): Observable<Sentiment[]> {
+    return this.http
+      .get<SentimentResponse>(
+        `${this.apiUrl}/stock/insider-sentiment?symbol=${symbol}&from=${fromDate}&to=${toDate}&token=${this.TOKEN}`
+      )
+      .pipe(map((res) => res?.data));
+  }
 
   public addStok(item: StockQuote): void {
     const data = this.getStocks();
@@ -48,6 +61,11 @@ export class StockTrackerService {
   public loadAllStocks(): void {
     const data = this.getStocks();
     this._stock$.next(data);
+  }
+
+  public getStockName(symbol: string): string {
+    let data = this.getStocks();
+    return data?.find((item) => item?.symbol === symbol)?.stockName;
   }
 
   private getStocks(): StockQuote[] {

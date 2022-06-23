@@ -1,0 +1,32 @@
+.card {
+  background-color: #fff;
+  background-clip: border-box;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 4px 14px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 10px;
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .mb-10 {
+    margin-bottom: 10px;
+  }
+
+  .arrow-up {
+    font-size: 33px;
+    color: green;
+    font-weight: bold;
+  }
+  .arrow-down {
+    font-size: 33px;
+    color: red;
+    font-weight: bold;
+  }
+}
